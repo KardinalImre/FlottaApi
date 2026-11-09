@@ -17,6 +17,7 @@ namespace FlottaApi
                 options.UseMySql(connstr, ServerVersion.AutoDetect(connstr));
             });
             builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -27,7 +28,6 @@ namespace FlottaApi
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
-                builder.Services.AddEndpointsApiExplorer();
                 app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "v1"));
             }
 
