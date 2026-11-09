@@ -1,4 +1,7 @@
 
+using FlottaApi.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace FlottaApi
 {
     public class Program
@@ -9,7 +12,12 @@ namespace FlottaApi
 
             // Add services to the container.
 
+            builder.Services.AddDbContext<FlottaContext>(options => {
+                string connstr = builder.Configuration.GetConnectionString("FlottaConnection");
+                options.UseMySql(connstr, ServerVersion.AutoDetect(connstr));
+            });
             builder.Services.AddControllers();
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
@@ -19,6 +27,8 @@ namespace FlottaApi
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                builder.Services.AddEndpointsApiExplorer();
+                app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "v1"));
             }
 
             app.UseHttpsRedirection();
